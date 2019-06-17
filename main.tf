@@ -19,10 +19,10 @@
 #-----------------#
 locals {
   invalid_parent_resource_type = "${var.parent_resource_type == "project" || var.parent_resource_type == "organization" || var.parent_resource_type == "folder" || var.parent_resource_type == "billing_account" ? 0 : 1 }"
-  is_project_level             = "${var.parent_resource_type == "project" ? 1 : 0}"
-  is_folder_level              = "${var.parent_resource_type == "folder" ? 1 : 0}"
-  is_org_level                 = "${var.parent_resource_type == "organization" ? 1 : 0}"
-  is_billing_level             = "${var.parent_resource_type == "billing_account" ? 1 : 0}"
+  is_project_level             = "${var.parent_resource_type == "project"}"
+  is_folder_level              = "${var.parent_resource_type == "folder"}"
+  is_org_level                 = "${var.parent_resource_type == "organization"}"
+  is_billing_level             = "${var.parent_resource_type == "billing_account"}"
 
   # Locals for outputs to ensure the value is available after the resource is created
   log_sink_writer_identity = "${local.is_project_level ? element(concat(google_logging_project_sink.sink.*.writer_identity, list("")), 0) : local.is_folder_level ? element(concat(google_logging_folder_sink.sink.*.writer_identity, list("")), 0) : local.is_org_level ? element(concat(google_logging_organization_sink.sink.*.writer_identity, list("")), 0) : local.is_billing_level ? element(concat(google_logging_billing_account_sink.sink.*.writer_identity, list("")), 0) : ""}"
